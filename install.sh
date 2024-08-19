@@ -38,7 +38,6 @@ sleep 5
 echo "Restarting Mosquitto"
 sudo systemctl restart mosquitto
 sleep 3
-sudo systemctl status mosquitto
 echo "Python packages"
 sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.10/EXTERNALLY-MANAGED
