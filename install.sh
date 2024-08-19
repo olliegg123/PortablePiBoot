@@ -1,6 +1,5 @@
 #!/bin/bash
-# wget https://raw.githubusercontent.com/olliegg123/PortablePiBoot/main/install.sh
-# sudo bash install.sh
+# wget https://raw.githubusercontent.com/olliegg123/PortablePiBoot/main/install.sh && sudo bash install.sh
 echo "Running setup script"
 read -p "Tailscale Auth Key:" ts_key
 read -p "Meraki API Key:" meraki_key
@@ -9,6 +8,7 @@ read -p "ThousandEyes Token:" te_key
 echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
 sudo apt install -y jq
+sudo apt install curl
 echo "Storing keys"
 JSON_STRING=$( jq -n \
                   --arg ts "$ts_key" \
@@ -24,7 +24,7 @@ echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot
 echo "Installing MQTT Broker..."
 sudo apt install -y mosquitto mosquitto-clients
-sleep 5
+sleep 3
 sudo systemctl enable mosquitto.service
 sleep 5
 echo "Updating Mosquitto Config"
