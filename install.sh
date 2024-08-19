@@ -22,6 +22,8 @@ curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up --authkey $ts_key
 sudo tailscale funnel --bg 9898
 sudo tailscale status --json >> /home/pi/tailscale.json
+echo "Getting ARP and saving"
+sudo arp -a >> /home/pi/arp_response.txt
 echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot
 echo "Installing MQTT Broker..."
@@ -43,7 +45,9 @@ sudo rm /usr/lib/python3.10/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.12/EXTERNALLY-MANAGED
 sudo cat /home/pi/PortablePiBoot/requirements.txt | xargs -n 1 pip3 install
 sudo mkdir /home/pi/logs
+sudo python3 /home/pi/PortablePiBoot/initialize.py
 #write out current crontab
+(sudo crontab -l 2>/dev/null; echo "*/5 * * * 9 /path/to/job -with args") | crontab -
 sudo crontab -l > mycron
 #echo new cron into cron file
 echo "@reboot python3 /home/pi/PortablePiBoot/bot.py >> /home/pi/logs/SMB.log 2>&1" >> mycron
