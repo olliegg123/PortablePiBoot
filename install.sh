@@ -22,6 +22,7 @@ echo "Connecting to TailScale network"
 echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot
 echo "Installing MQTT Broker..."
+sleep 3
 sudo apt install -y mosquitto mosquitto-clients
 sleep 5
 sudo systemctl enable mosquitto.service
