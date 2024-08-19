@@ -1,10 +1,10 @@
 #!/bin/bash
-# wget -O - https://github.com/olliegg123/PortablePiBoot/blob/main/install.sh | bash
+# wget -O - https://raw.githubusercontent.com/olliegg123/PortablePiBoot/main/install.sh | bash
 echo "Running setup script"
-read -p "Tailscale Auth Key:" ts_key
-read -p "Meraki API Key:" meraki_key
-read -p "Webex Bot Token:" webex_key
-read -p "ThousandEyes Token:" te_key
+read -n 1 -p "Tailscale Auth Key:" ts_key
+read -n 1 -p "Meraki API Key:" meraki_key
+read -n 1 -p "Webex Bot Token:" webex_key
+read -n 1 -p "ThousandEyes Token:" te_key
 echo "Updating packages"
 #sudo apt-get update && sudo apt-get -y upgrade
 sudo apt install -y jq
