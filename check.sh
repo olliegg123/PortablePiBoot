@@ -10,6 +10,8 @@ if [ $LOCAL = $REMOTE ]; then
     echo "Up-to-date from main"
 elif [ $LOCAL = $BASE ]; then
     echo "Need to pull from origin"
+    git pull
+    #sudo reboot
 elif [ $REMOTE = $BASE ]; then
     echo "Need to push"
 else
