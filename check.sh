@@ -7,7 +7,7 @@ REMOTE=$(git rev-parse "$UPSTREAM")
 BASE=$(git merge-base @ "$UPSTREAM")
 
 if [ $LOCAL = $REMOTE ]; then
-    echo "Up-to-date"
+    echo "Up-to-date from main"
 elif [ $LOCAL = $BASE ]; then
     echo "Need to pull from origin"
 elif [ $REMOTE = $BASE ]; then
