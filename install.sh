@@ -17,9 +17,11 @@ JSON_STRING=$( jq -n \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
 printf "$JSON_STRING" >> /home/pi/keys.json
+sudo tailscale status --json >>
 echo "Connecting to TailScale network"
 curl -fsSL https://tailscnale.com/install.sh | sh
 sudo tailscale up --authkey $ts_key
+sudo tailscale funnel --bg 9898
 echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot
 echo "Installing MQTT Broker..."
@@ -40,6 +42,14 @@ sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.10/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.12/EXTERNALLY-MANAGED
 sudo cat /home/pi/PortablePiBoot/requirements.txt | xargs -n 1 pip3 install
+sudo mkdir /home/pi/logs
+#write out current crontab
+sudo crontab -l > mycron
+#echo new cron into cron file
+echo "@reboot python3 /home/pi/PortablePiBoot/bot.py >> /home/pi/logs/SMB.log 2>&1" >> mycron
+#install new cron file
+sudo crontab mycron
+sudo rm mycron
 echo "Rebooting"
 sudo reboot
 
