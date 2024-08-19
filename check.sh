@@ -1,6 +1,6 @@
 #!/bin/sh
 cd /home/pi/PortablePiBoot
-git fetch origin
+git fetch origin -q
 UPSTREAM=${1:-'@{u}'}
 LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")
