@@ -17,11 +17,11 @@ JSON_STRING=$( jq -n \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
 printf "$JSON_STRING" >> /home/pi/keys.json
-sudo tailscale status --json >>
 echo "Connecting to TailScale network"
-curl -fsSL https://tailscnale.com/install.sh | sh
+curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up --authkey $ts_key
 sudo tailscale funnel --bg 9898
+sudo tailscale status --json >> /home/pi/tailscale.json
 echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot
 echo "Installing MQTT Broker..."
