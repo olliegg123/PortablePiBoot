@@ -16,7 +16,7 @@ JSON_STRING=$( jq -n \
                   --arg wx "$webex_key" \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
-printf $JSON_STRING > keys.json
+printf $JSON_STRING
 echo "Connecting to TailScale network"
 #curl -fsSL https://tailscale.com/install.sh | sh
 #sudo tailscale up --authkey $ts_key
@@ -27,9 +27,15 @@ sleep 3
 sudo apt install -y mosquitto mosquitto-clients
 sleep 5
 sudo systemctl enable mosquitto.service
+sleep 5
+echo "Updating Mosquitto Config"
 printf "listener 1883" >> /etc/mosquitto/mosquitto.conf
 printf "allow_anonymous true" >> /etc/mosquitto/mosquitto.conf
+sleep 5
+echo "Restarting Mosquitto"
 sudo systemctl restart mosquitto
+sleep 3
+sudo systemctl status mosquitto
 echo "Python packages"
 sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.10/EXTERNALLY-MANAGED
