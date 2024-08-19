@@ -6,14 +6,24 @@ read -p "Meraki API Key:" meraki_key
 read -p "Webex Bot Token:" webex_key
 read -p "ThousandEyes Token:" te_key
 echo "Updating packages"
-sudo apt-get update && sudo apt-get -y upgrade
+#sudo apt-get update && sudo apt-get -y upgrade
+sudo apt install -y jq
+echo "Storing keys"
+JSON_STRING=$( jq -n \
+                  --arg ts "$ts_key" \
+                  --arg mr "$meraki_key" \
+                  --arg wx "$webex_key" \
+                  --arg te "$te_key" \
+                  '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
+printf $JSON_STRING > keys.json
 echo "Connecting to TailScale network"
-curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale up --authkey $ts_key
+#curl -fsSL https://tailscale.com/install.sh | sh
+#sudo tailscale up --authkey $ts_key
 echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot
 echo "Installing MQTT Broker..."
 sudo apt install -y mosquitto mosquitto-clients
+sleep 5
 sudo systemctl enable mosquitto.service
 printf "listener 1883" >> /etc/mosquitto/mosquitto.conf
 printf "allow_anonymous true" >> /etc/mosquitto/mosquitto.conf
