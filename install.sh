@@ -1,5 +1,6 @@
 #!/bin/bash
 # wget https://raw.githubusercontent.com/olliegg123/PortablePiBoot/main/install.sh && sudo bash install.sh
+
 echo "If you are running this script and don't know what you're doing. Contact Ollie Gerrard (ogerrard@cisco.com)"
 echo "Running setup script"
 read -p "Tailscale Auth Key:" ts_key
