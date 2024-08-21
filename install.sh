@@ -38,7 +38,7 @@ echo "Getting ARP and saving"
 sudo arp -a >> /home/storage/arp_response.txt
 
 echo "Cloning necessary repo..."
-git clone https://github.com/olliegg123/PortablePiBoot /home/
+git clone https://github.com/olliegg123/PortablePiBoot /home/PortablePiBoot
 
 echo "Installing MQTT Broker..."
 sudo apt install -y mosquitto mosquitto-clients
