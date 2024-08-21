@@ -29,8 +29,6 @@ with open('/home/storage/keys.json') as f:
     keys = json.load(f)
 with open('/home/storage/tailscale.json') as f:
     tailscale_json = json.load(f)
-with open('/home/storage/webex_recipients.txt') as f:
-    recipients = f.read().splitlines()
 
 Meraki_API_Key = keys["meraki"]
 headers = {
@@ -120,6 +118,8 @@ def on_message(client, userdata, msg):
             response = requests.post(url, headers=headers)
             r = json.loads(response.text)
             image_url = r["url"]
+            with open('/home/storage/webex_recipients.txt') as f:
+                recipients = f.read().splitlines()
             for receiver in recipients:
                 card = [
                 {

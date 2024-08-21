@@ -218,7 +218,7 @@ def configScreen(incoming_msg):
                             },
                             {
                                 "type": "TextBlock",
-                                "text": "Add the Webex emails of people who should be alerted for things like \"Selfie\", or click \"Just Me\" at the bottom if it's just yourself:",
+                                "text": "Add the Webex emails of people who should be alerted for things like \"Selfie\", including your own email if needed:",
                                 "wrap": True
                             },
                             {
@@ -254,24 +254,6 @@ def configScreen(incoming_msg):
                             {
                                 "type": "ColumnSet",
                                 "columns": [
-                                    {
-                                        "type": "Column",
-                                        "width": "stretch",
-                                        "items": [
-                                            {
-                                                "type": "ActionSet",
-                                                "actions": [
-                                                    {
-                                                        "type": "Action.Submit",
-                                                        "title": "Just ME",
-                                                        "data": {
-                                                            "id": "config_solo"
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
                                     {
                                         "type": "Column",
                                         "width": "stretch",
