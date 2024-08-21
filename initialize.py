@@ -12,10 +12,10 @@ import sqlite3
 import random
 import netifaces as ni
 
-with open('/home/pi/keys.json') as f:
+with open('/home/pi/storage/keys.json') as f:
     keys = json.load(f)
 
-file = open("arp_response.txt", "r")
+file = open("/home/pi/storage/arp_response.txt", "r")
 arp_str = file.read()
 p = re.compile(r'(?:[0-9a-fA-F]:?){12}')
 macs = re.findall(p, arp_str)
@@ -54,6 +54,10 @@ for device in myDeviceList:
     model = device["model"]
     serial = device["serial"]
     print(f"{model} - {serial}")
+
+dataDict = {"networkId": networkId, "orgId": portable_orgId}
+with open('/home/pi/storage/meraki_details.json', 'w') as f:
+    json.dump(dataDict, f)
 #-----------------------------------------------------------------#
 print("Renaming Devices to be their model")
 for device in myDeviceList:
