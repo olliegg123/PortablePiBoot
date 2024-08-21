@@ -7,7 +7,8 @@ REMOTE=$(git rev-parse "$UPSTREAM")
 BASE=$(git merge-base @ "$UPSTREAM")
 
 sudo rm /home/storage/tailscale.json
-sudo tailscale funnel --https=443 off && sudo tailscale funnel --bg 9898
+sudo tailscale funnel --https=443 off
+sudo tailscale funnel --bg 9898
 sudo tailscale status --json > /home/storage/tailscale.json
 sudo rm /home/logs/*
 
