@@ -71,9 +71,9 @@ echo "Editing Cron Tab..."
 (sudo crontab -l 2>/dev/null; echo "#@reboot /path/to/job -with args") | crontab -
 sudo crontab -l > mycron
 #echo new cron into cron file
-echo "@reboot bash /home/pi/PortablePiBoot/check.sh >> /home/pi/logs/check.log 2>&1" >> mycron
-echo "@reboot python3 /home/pi/PortablePiBoot/bot.py >> /home/pi/logs/SMB.log 2>&1" >> mycron
-echo "@reboot python3 /home/pi/PortablePiBoot/receiver.py >> /home/pi/logs/receiver.log 2>&1" >> mycron
+echo "@reboot sleep 60 && bash /home/pi/PortablePiBoot/check.sh >> /home/pi/logs/check.log 2>&1" >> mycron
+echo "@reboot sleep 60 && python3 /home/pi/PortablePiBoot/bot.py >> /home/pi/logs/SMB.log 2>&1" >> mycron
+echo "@reboot sleep 60 && python3 /home/pi/PortablePiBoot/receiver.py >> /home/pi/logs/receiver.log 2>&1" >> mycron
 #install new cron file
 sudo crontab mycron
 sudo rm mycron
