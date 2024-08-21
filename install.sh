@@ -12,9 +12,9 @@ read -p "ThousandEyes Token:" te_key
 
 echo "Core Installs..."
 sudo mkdir /home/pi/storage
-sudo apt install -y jq
-sudo apt install curl
-sudo apt install screen
+sudo apt-get -y install -y jq
+sudo apt-get -y install curl
+sudo apt-get -y install screen
 
 echo "Storing keys"
 JSON_STRING=$( jq -n \
