@@ -18,12 +18,12 @@ import random
 
 time.sleep(20)
 
-with open('/home/pi/storage/meraki_details.json') as f:
+with open('/home/storage/meraki_details.json') as f:
     merakiDetails = json.load(f)
 print(merakiDetails)
-with open('/home/pi/storage/keys.json') as f:
+with open('/home/storage/keys.json') as f:
     keys = json.load(f)
-with open('/home/pi/storage/tailscale.json') as f:
+with open('/home/storage/tailscale.json') as f:
     tailscale_json = json.load(f)
 
 Meraki_API_Key = keys["meraki"]
@@ -571,7 +571,7 @@ def peopleCount(incoming_msg, sender):
     res = json.loads(response.text)
     link = res["url"]
     print(link)
-    with open('/home/pi/storage/detections.json') as f:
+    with open('/home/storage/detections.json') as f:
         r = json.load(f)
     try:
         liveCount = r["person"]

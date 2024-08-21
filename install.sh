@@ -11,7 +11,7 @@ read -p "Webex Bot Token:" webex_key
 read -p "ThousandEyes Token:" te_key
 
 echo "Core Installs..."
-sudo mkdir /home/pi/storage
+sudo mkdir /home/storage
 sudo apt-get -y install -y jq
 sudo apt-get -y install curl
 sudo apt-get -y install screen
@@ -23,22 +23,22 @@ JSON_STRING=$( jq -n \
                   --arg wx "$webex_key" \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
-printf "$JSON_STRING" >> /home/pi/storage/keys.json
+printf "$JSON_STRING" >> /home/storage/keys.json
 
 echo "Connecting to TailScale network"
 curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up --authkey $ts_key
 sudo tailscale funnel --bg 9898
-sudo tailscale status --json >> /home/pi/storage/tailscale.json
+sudo tailscale status --json >> /home/storage/tailscale.json
 
 echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
 
 echo "Getting ARP and saving"
-sudo arp -a >> /home/pi/storage/arp_response.txt
+sudo arp -a >> /home/storage/arp_response.txt
 
 echo "Cloning necessary repo..."
-git clone https://github.com/olliegg123/PortablePiBoot
+git clone https://github.com/olliegg123/PortablePiBoot /home/
 
 echo "Installing MQTT Broker..."
 sudo apt install -y mosquitto mosquitto-clients
@@ -59,21 +59,21 @@ echo "Sorting out Python packages..."
 sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.10/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.12/EXTERNALLY-MANAGED
-sudo cat /home/pi/PortablePiBoot/requirements.txt | xargs -n 1 pip3 install
-sudo mkdir /home/pi/logs
-sudo mkdir /home/pi/storage
+sudo cat /home/PortablePiBoot/requirements.txt | xargs -n 1 pip3 install
+sudo mkdir /home/logs
+sudo mkdir /home/storage
 
 echo "Setting up Meraki network"
-sudo python3 /home/pi/PortablePiBoot/initialize.py
+sudo python3 /home/PortablePiBoot/initialize.py
 
 echo "Editing Cron Tab..."
 #write out current crontab
 (sudo crontab -l 2>/dev/null; echo "#@reboot /path/to/job -with args") | crontab -
 sudo crontab -l > mycron
 #echo new cron into cron file
-echo "@reboot sleep 60 && bash /home/pi/PortablePiBoot/check.sh >> /home/pi/logs/check.log 2>&1" >> mycron
-echo "@reboot sleep 60 && python3 /home/pi/PortablePiBoot/bot.py >> /home/pi/logs/SMB.log 2>&1" >> mycron
-echo "@reboot sleep 60 && python3 /home/pi/PortablePiBoot/receiver.py >> /home/pi/logs/receiver.log 2>&1" >> mycron
+echo "@reboot sleep 60 && bash /home/PortablePiBoot/check.sh >> /home/logs/check.log 2>&1" >> mycron
+echo "@reboot sleep 60 && python3 /home/PortablePiBoot/bot.py >> /home/logs/SMB.log 2>&1" >> mycron
+echo "@reboot sleep 60 && python3 /home/PortablePiBoot/receiver.py >> /home/logs/receiver.log 2>&1" >> mycron
 #install new cron file
 sudo crontab mycron
 sudo rm mycron

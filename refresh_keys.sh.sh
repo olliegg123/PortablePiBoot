@@ -11,4 +11,4 @@ JSON_STRING=$( jq -n \
                   --arg wx "$webex_key" \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
-printf "$JSON_STRING" >> /home/pi/storage/keys.json
+printf "$JSON_STRING" >> /home/storage/keys.json

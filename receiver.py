@@ -22,12 +22,12 @@ import netifaces as ni
 time.sleep(20)
 
 ##### CORE IMPORTS #######
-with open('/home/pi/storage/meraki_details.json') as f:
+with open('/home/storage/meraki_details.json') as f:
     merakiDetails = json.load(f)
 print(merakiDetails)
-with open('/home/pi/storage/keys.json') as f:
+with open('/home/storage/keys.json') as f:
     keys = json.load(f)
-with open('/home/pi/storage/tailscale.json') as f:
+with open('/home/storage/tailscale.json') as f:
     tailscale_json = json.load(f)
 
 Meraki_API_Key = keys["meraki"]
@@ -102,7 +102,7 @@ def on_message(client, userdata, msg):
             logger.debug(lastMVMessage)
             logger.debug(payload)
             logger.debug("Dumping ^ to file")
-            with open('/home/pi/storage/detections.json', 'w') as f:
+            with open('/home/storage/detections.json', 'w') as f:
                 json.dump(payload, f)
             lastMVMessage = payload
     if "buttonReleased" in msg.topic:
