@@ -6,6 +6,7 @@ LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")
 BASE=$(git merge-base @ "$UPSTREAM")
 
+sudo rm /home/pi/storage/tailscale.json
 sudo tailscale funnel --https=443 off && sudo tailscale funnel --bg 9898
 sudo tailscale status --json >> /home/pi/storage/tailscale.json
 sudo rm /home/pi/logs/*
