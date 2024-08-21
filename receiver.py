@@ -105,7 +105,6 @@ def on_message(client, userdata, msg):
             with open('/home/pi/storage/detections.json', 'w') as f:
                 json.dump(payload, f)
             lastMVMessage = payload
-            time.sleep(100)
     if "buttonReleased" in msg.topic:
         payload = json.loads(msg.payload)
         payloadId = payload["id"]
