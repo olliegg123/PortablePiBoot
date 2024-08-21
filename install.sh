@@ -61,7 +61,6 @@ sudo rm /usr/lib/python3.10/EXTERNALLY-MANAGED
 sudo rm /usr/lib/python3.12/EXTERNALLY-MANAGED
 sudo cat /home/PortablePiBoot/requirements.txt | xargs -n 1 pip3 install
 sudo mkdir /home/logs
-sudo mkdir /home/storage
 
 echo "Setting up Meraki network"
 sudo python3 /home/PortablePiBoot/initialize.py
