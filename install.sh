@@ -1,6 +1,7 @@
 #!/bin/bash
 # wget https://raw.githubusercontent.com/olliegg123/PortablePiBoot/main/install.sh && sudo bash install.sh
 
+echo "Version 1.8"
 echo "If you are running this script and don't know what you're doing. Contact Ollie Gerrard (ogerrard@cisco.com)"
 
 echo "Running setup script"
