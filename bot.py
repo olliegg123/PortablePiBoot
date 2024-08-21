@@ -456,6 +456,12 @@ def getCardID(messageID):
 def saveConfig(incoming_msg, sender, input_dict):
     sender_email = str(incoming_msg.personEmail)
     logger.debug(input_dict)
+    del input_dict['id']
+    listOfEmails = list(input_dict.values())
+    listOfEmails[:] = [x for x in listOfEmails if x]
+    with open('/home/storage/webex_recipients.txt', 'w+') as f:
+        f.writelines([i + '\n' for i in listOfEmails])
+    return f"added {listOfEmails} to alert config"
 
     
 
