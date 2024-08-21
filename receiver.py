@@ -118,8 +118,12 @@ def on_message(client, userdata, msg):
             response = requests.post(url, headers=headers)
             r = json.loads(response.text)
             image_url = r["url"]
-            with open('/home/storage/webex_recipients.txt') as f:
-                recipients = f.read().splitlines()
+            try:
+                with open('/home/storage/webex_recipients.txt') as f:
+                    recipients = f.read().splitlines()
+            except Exception as e:
+                logger.debug("Most likely no file.")
+                recipients = []
             for receiver in recipients:
                 card = [
                 {
