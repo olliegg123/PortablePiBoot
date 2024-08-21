@@ -9,6 +9,12 @@ read -p "Meraki API Key:" meraki_key
 read -p "Webex Bot Token:" webex_key
 read -p "ThousandEyes Token:" te_key
 
+echo "Core Installs..."
+sudo mkdir /home/pi/storage
+sudo apt install -y jq
+sudo apt install curl
+sudo apt install screen
+
 echo "Storing keys"
 JSON_STRING=$( jq -n \
                   --arg ts "$ts_key" \
@@ -16,7 +22,6 @@ JSON_STRING=$( jq -n \
                   --arg wx "$webex_key" \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
-sudo mkdir /home/pi/storages
 printf "$JSON_STRING" >> /home/pi/storage/keys.json
 
 echo "Connecting to TailScale network"
@@ -27,9 +32,7 @@ sudo tailscale status --json >> /home/pi/storage/tailscale.json
 
 echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
-sudo apt install -y jq
-sudo apt install curl
-sudo apt install screen
+
 echo "Getting ARP and saving"
 sudo arp -a >> /home/pi/storage/arp_response.txt
 
