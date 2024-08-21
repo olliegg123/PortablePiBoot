@@ -23,19 +23,19 @@ JSON_STRING=$( jq -n \
                   --arg wx "$webex_key" \
                   --arg te "$te_key" \
                   '{tailscale: $ts, meraki: $mr, webex: $wx, thousandeyes: $te}' )
-printf "$JSON_STRING" >> /home/storage/keys.json
+printf "$JSON_STRING" > /home/storage/keys.json
 
 echo "Connecting to TailScale network"
 curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up --authkey $ts_key
 sudo tailscale funnel --bg 9898
-sudo tailscale status --json >> /home/storage/tailscale.json
+sudo tailscale status --json > /home/storage/tailscale.json
 
 echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
 
 echo "Getting ARP and saving"
-sudo arp -a >> /home/storage/arp_response.txt
+sudo arp -a > /home/storage/arp_response.txt
 
 echo "Cloning necessary repo..."
 git clone https://github.com/olliegg123/PortablePiBoot /home/PortablePiBoot
@@ -70,9 +70,10 @@ echo "Editing Cron Tab..."
 (sudo crontab -l 2>/dev/null; echo "#@reboot /path/to/job -with args") | crontab -
 sudo crontab -l > mycron
 #echo new cron into cron file
-echo "@reboot sleep 60 && bash /home/PortablePiBoot/check.sh >> /home/logs/check.log 2>&1" >> mycron
-echo "@reboot sleep 60 && python3 /home/PortablePiBoot/bot.py >> /home/logs/SMB.log 2>&1" >> mycron
-echo "@reboot sleep 60 && python3 /home/PortablePiBoot/receiver.py >> /home/logs/receiver.log 2>&1" >> mycron
+echo "@reboot sleep 60 && sudo bash /home/PortablePiBoot/check.sh >> /tmp/check.log 2>&1" >> mycron
+echo "@reboot sleep 60 && sudo python3 /home/PortablePiBoot/bot.py >> /tmp/SMB.log 2>&1" >> mycron
+echo "@reboot sleep 60 && sudo python3 /home/PortablePiBoot/receiver.py >> /tmp/receiver.log 2>&1" >> mycron
+
 #install new cron file
 sudo crontab mycron
 sudo rm mycron
