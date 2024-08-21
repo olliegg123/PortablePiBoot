@@ -19,7 +19,7 @@ import paho.mqtt.client as mqtt
 import urllib.request
 import netifaces as ni
 
-time.sleep(60)
+time.sleep(20)
 
 ##### CORE IMPORTS #######
 with open('/home/pi/storage/meraki_details.json') as f:

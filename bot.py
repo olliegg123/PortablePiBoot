@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 import sqlite3
 import random
 
-time.sleep(60)
+time.sleep(20)
 
 with open('/home/pi/storage/meraki_details.json') as f:
     merakiDetails = json.load(f)
