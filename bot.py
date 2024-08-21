@@ -199,6 +199,109 @@ def clearScreen(incoming_msg):
 <br />                                                                                          """
     return message
 
+def configScreen(incoming_msg):
+    sender_email = str(incoming_msg.personEmail)
+    card = [
+                {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "type": "AdaptiveCard",
+                        "version": "1.3",
+                        "body": [
+                            {
+                                "type": "TextBlock",
+                                "text": "Who should be alerted?",
+                                "wrap": True,
+                                "size": "Large",
+                                "weight": "Bolder"
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Add the Webex emails of people who should be alerted for things like \"Selfie\", or click \"Just Me\" at the bottom if it's just yourself:",
+                                "wrap": True
+                            },
+                            {
+                                "type": "Input.Text",
+                                "placeholder": "Placeholder text",
+                                "id": "email1"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "placeholder": "Placeholder text",
+                                "id": "email2"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "placeholder": "Placeholder text",
+                                "id": "email3"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "placeholder": "Placeholder text",
+                                "id": "email4"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "placeholder": "Placeholder text",
+                                "id": "email5"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "placeholder": "Placeholder text",
+                                "id": "email6"
+                            },
+                            {
+                                "type": "ColumnSet",
+                                "columns": [
+                                    {
+                                        "type": "Column",
+                                        "width": "stretch",
+                                        "items": [
+                                            {
+                                                "type": "ActionSet",
+                                                "actions": [
+                                                    {
+                                                        "type": "Action.Submit",
+                                                        "title": "Just ME",
+                                                        "data": {
+                                                            "id": "config_solo"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Column",
+                                        "width": "stretch",
+                                        "items": [
+                                            {
+                                                "type": "ActionSet",
+                                                "actions": [
+                                                    {
+                                                        "type": "Action.Submit",
+                                                        "title": "Submit Emails",
+                                                        "data": {
+                                                            "id": "config_submit"
+                                                        }
+                                                    }
+                                                ],
+                                                "horizontalAlignment": "Right"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+    "id": "mainControl"
+                    }
+                }
+            ]
+    card_res = api.messages.create(toPersonEmail=sender_email, markdown="Card sent.", attachments=card )
+    logger.info(card_res)
+    return card
+
 def intro(incoming_msg):
     sender_email = str(incoming_msg.personEmail)
     logger.debug(incoming_msg)
@@ -350,6 +453,12 @@ def getCardID(messageID):
     cardID = messagecontent.attachments[0]['content']['id']
     return cardID
 
+def saveConfig(incoming_msg, sender, input_dict):
+    sender_email = str(incoming_msg.personEmail)
+    logger.debug(input_dict)
+
+    
+
 def handle_cards(api, incoming_msg):
     """
     Sample function to handle card actions.
@@ -394,6 +503,11 @@ def handle_button(cardID, incoming_msg, input_dict, buttonID):
         return peopleCount(incoming_msg, sender)
     elif buttonID == "portStatus":
         return getSwitchPorts(incoming_msg, sender)
+    elif buttonID == "config_submit":
+        return saveConfig(incoming_msg, sender, input_dict)
+    elif buttonID == "config_solo":
+        return saveConfig(incoming_msg, sender, input_dict)
+    
 
 def rebootSwitch (incoming_msg, sender):
     name = sender.displayName
@@ -725,6 +839,7 @@ def getSwitchPorts(incoming_msg, sender):
 bot.set_greeting(intro)
 bot.add_command("attachmentActions", "*", handle_cards)
 bot.add_command("/clear", "Clear Screen", clearScreen)
+bot.add_command("/config", "Configure the bot", configScreen)
 # Every bot includes a default "/echo" command.  You can remove it, or any
 # other command with the remove_command(command) method.
 bot.remove_command("/echo")
