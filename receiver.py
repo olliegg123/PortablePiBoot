@@ -108,7 +108,7 @@ def on_message(client, userdata, msg):
                 lastMVMessage = payload
         if "buttonReleased" in msg.topic:
             payload = json.loads(msg.payload)
-            payloadId = payload["id"]
+            payloadId = payload["sequenceNumber"]
             if payloadId != lastSelfieMessage:
                 logger.debug("Selfie ID received was different to last time.")
                 logger.debug(lastMVMessage)
