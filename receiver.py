@@ -120,6 +120,7 @@ def on_message(client, userdata, msg):
                 r = json.loads(response.text)
                 logger.debug(r)
                 image_url = r["url"]
+                time.sleep(8)
                 try:
                     with open('/home/storage/webex_recipients.txt') as f:
                         recipients = f.read().splitlines()
@@ -150,7 +151,6 @@ def on_message(client, userdata, msg):
                         }
                     }
                 ]
-                    time.sleep(8)
                     payload = {
                         "toPersonEmail": receiver, 
                         "markdown": "Card sent.",
