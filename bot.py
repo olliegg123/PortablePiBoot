@@ -670,6 +670,8 @@ def latestCrossings(incoming_msg, sender):
 def peopleCount(incoming_msg, sender):
     url = f"https://api.meraki.com/api/v1/devices/{peopleCountSN}/camera/generateSnapshot"
     response = requests.post(url, headers=headers)
+    logger.debug(response)
+    logger.debug(response.text)
     res = json.loads(response.text)
     link = res["url"]
     print(link)
