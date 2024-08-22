@@ -94,67 +94,72 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     global lastMVMessage
     global lastSelfieMessage
-    if "merakimv" in msg.topic:
-        payload = json.loads(msg.payload)
-        payload = payload["counts"]
-        if payload != lastMVMessage:
-            logger.debug("Message received was different to last message.")
-            logger.debug(lastMVMessage)
-            logger.debug(payload)
-            logger.debug("Dumping ^ to file")
-            with open('/home/storage/detections.json', 'w') as f:
-                json.dump(payload, f)
-            lastMVMessage = payload
-    if "buttonReleased" in msg.topic:
-        payload = json.loads(msg.payload)
-        payloadId = payload["id"]
-        if payloadId != lastSelfieMessage:
-            logger.debug("Selfie ID received was different to last time.")
-            logger.debug(lastMVMessage)
-            logger.debug(payloadId)
-            logger.debug("Triggering Snapshots")
-            lastSelfieMessage = payloadId
-            url = f"https://api.meraki.com/api/v1/devices/{snapshotSN}/camera/generateSnapshot"
-            response = requests.post(url, headers=headers)
-            r = json.loads(response.text)
-            image_url = r["url"]
-            try:
-                with open('/home/storage/webex_recipients.txt') as f:
-                    recipients = f.read().splitlines()
-            except Exception as e:
-                logger.debug("Most likely no file.")
-                recipients = []
-            for receiver in recipients:
-                card = [
-                {
-                    "contentType": "application/vnd.microsoft.card.adaptive",
-                    "content": {
-                        "type": "AdaptiveCard",
-                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "version": "1.3",
-                        "body": [
-                            {
-                                "type": "Image",
-                                "url": image_url
-                            },
-                            {
-                                "type": "TextBlock",
-                                "text": "Selfie!",
-                                "size": "Large",
-                                "weight": "Bolder"
-                            }
-                        ]
+    try:
+        if "merakimv" in msg.topic:
+            payload = json.loads(msg.payload)
+            payload = payload["counts"]
+            if payload != lastMVMessage:
+                logger.debug("Message received was different to last message.")
+                logger.debug(lastMVMessage)
+                logger.debug(payload)
+                logger.debug("Dumping ^ to file")
+                with open('/home/storage/detections.json', 'w') as f:
+                    json.dump(payload, f)
+                lastMVMessage = payload
+        if "buttonReleased" in msg.topic:
+            payload = json.loads(msg.payload)
+            payloadId = payload["id"]
+            if payloadId != lastSelfieMessage:
+                logger.debug("Selfie ID received was different to last time.")
+                logger.debug(lastMVMessage)
+                logger.debug(payloadId)
+                logger.debug("Triggering Snapshots")
+                lastSelfieMessage = payloadId
+                url = f"https://api.meraki.com/api/v1/devices/{snapshotSN}/camera/generateSnapshot"
+                response = requests.post(url, headers=headers)
+                r = json.loads(response.text)
+                logger.debug(r)
+                image_url = r["url"]
+                try:
+                    with open('/home/storage/webex_recipients.txt') as f:
+                        recipients = f.read().splitlines()
+                except Exception as e:
+                    logger.debug("Most likely no file.")
+                    recipients = []
+                for receiver in recipients:
+                    logger.debug(f"Sending snapshot to {receiver}")
+                    card = [
+                    {
+                        "contentType": "application/vnd.microsoft.card.adaptive",
+                        "content": {
+                            "type": "AdaptiveCard",
+                            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                            "version": "1.3",
+                            "body": [
+                                {
+                                    "type": "Image",
+                                    "url": image_url
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Selfie!",
+                                    "size": "Large",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
                     }
+                ]
+                time.sleep(8)
+                payload = {
+                    "toPersonEmail": receiver, 
+                    "markdown": "Card sent.",
+                    "attachments": card
                 }
-            ]
-            time.sleep(8)
-            payload = {
-                "toPersonEmail": receiver, 
-                "markdown": "Card sent.",
-                "attachments": card
-            }
-            card_res = requests.post(url="https://webexapis.com/v1/messages", data=json.dumps(payload), headers = webexHeaders)
-            print(card_res.text)
+                card_res = requests.post(url="https://webexapis.com/v1/messages", data=json.dumps(payload), headers = webexHeaders)
+                print(card_res.text)
+    except Exception as e:
+        print(e)
 
 
 raspberryIp = str(ni.ifaddresses('eth0')[ni.AF_INET][0]['addr'])
