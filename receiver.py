@@ -150,14 +150,14 @@ def on_message(client, userdata, msg):
                         }
                     }
                 ]
-                time.sleep(8)
-                payload = {
-                    "toPersonEmail": receiver, 
-                    "markdown": "Card sent.",
-                    "attachments": card
-                }
-                card_res = requests.post(url="https://webexapis.com/v1/messages", data=json.dumps(payload), headers = webexHeaders)
-                print(card_res.text)
+                    time.sleep(8)
+                    payload = {
+                        "toPersonEmail": receiver, 
+                        "markdown": "Card sent.",
+                        "attachments": card
+                    }
+                    card_res = requests.post(url="https://webexapis.com/v1/messages", data=json.dumps(payload), headers = webexHeaders)
+                    print(card_res.text)
     except Exception as e:
         print(e)
 
