@@ -308,35 +308,6 @@ def intro(incoming_msg):
                             },
                             {
                                 "type": "TextBlock",
-                                "text": "Control MT40",
-                                "wrap": True,
-                                "weight": "Bolder"
-                            },
-                            {
-                                "type": "ColumnSet",
-                                "columns": [
-                                    {
-                                        "type": "Column",
-                                        "width": "stretch",
-                                        "items": [
-                                            {
-                                                "type": "ActionSet",
-                                                "actions": [
-                                                    {
-                                                        "type": "Action.Submit",
-                                                        "title": "Reboot MT40",
-                                                        "data": {
-                                                            "id": "switchReboot"
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "TextBlock",
                                 "text": "Camera Intelligence",
                                 "wrap": True,
                                 "weight": "Bolder"
